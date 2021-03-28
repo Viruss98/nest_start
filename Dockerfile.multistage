@@ -1,0 +1,36 @@
+# Stage 1: Building the code
+FROM node:14.16-alpine AS builder
+
+LABEL maintainer="the.duong@ntq-solution.com.vn"
+
+EXPOSE 3000
+
+ENV NODE_ENV development
+
+WORKDIR /home/node
+
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile
+
+COPY . .
+
+RUN yarn build
+RUN yarn install --production --frozen-lockfile
+
+# Stage 2: And then copy over node_modules, etc from that stage to the smaller base image
+FROM node:14.16-alpine as production
+
+LABEL maintainer="the.duong@ntq-solution.com.vn"
+
+EXPOSE 3000
+
+WORKDIR /home/node
+
+ENV NODE_ENV production
+
+COPY --from=builder /home/node/dist ./dist
+COPY --from=builder /home/node/public ./public
+COPY --from=builder /home/node/node_modules ./node_modules
+
+CMD ["node", "dist/main.js"]

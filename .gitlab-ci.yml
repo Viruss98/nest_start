@@ -1,0 +1,28 @@
+include:
+  - project: the.duong/ci-cd
+    ref: master
+    file: templates/js/build-nest.yml
+
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_FILE: Dockerfile.multistage
+  DOCKER_BUILD_IMAGE: dk-object-1/api:${CI_COMMIT_TAG}
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+stages:
+  - bundle
+
+.js_bundle_config:
+  tags:
+    - docker
+    - devops
+  variables:
+    CI: 'true'
