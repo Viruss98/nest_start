@@ -1,7 +1,10 @@
 import { Resolver, Args, Mutation } from '@nestjs/graphql';
 import { BlogsService } from '../services/blogs.service';
-import { NewBlogInput } from '../dto/new_blog.input';
+import { NewBlogInput, UpdateBlogInput } from '../dto/new_blog.input';
 import { BlogEntity } from '../entities/blog.entity';
+import { CurrentUser, AuthJwt } from 'src/decorators/common.decorator';
+import { User } from '../../users/entities/users.entity';
+import { ID } from '@nestjs/graphql';
 
 @Resolver(() => BlogEntity)
 export class BlogsMutationResolver {
@@ -15,5 +18,24 @@ export class BlogsMutationResolver {
     // });
 
     return blog;
+  }
+
+  // update blog
+  @Mutation(() => BlogEntity)
+  @AuthJwt() // auth to update
+  async updateBlog(@Args('input') input: UpdateBlogInput, @CurrentUser() currentUser: User) {
+    const blog = await this.blogService.findById(input.id);
+    console.log(999, blog);
+    console.log(currentUser)
+    // if (category.ownerId !== currentUser.id) throw new ForbiddenException();
+
+    return this.blogService.update(input.id, { ...input });
+  }
+
+  // Remove blog
+  @Mutation(() => Boolean)
+  @AuthJwt() // auth to delete
+  async removeBlog(@Args({ type: () => ID, name: 'id', nullable: true }) id: string): Promise<boolean> {
+    return await this.blogService.removeBlog(id);
   }
 }

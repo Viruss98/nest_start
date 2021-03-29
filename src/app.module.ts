@@ -13,6 +13,8 @@ import { CommonModule } from './modules/common/common.module';
 import { MediaModule } from './modules/media/media.module';
 import { UsersModule } from './modules/users/users.module';
 import { typeORMConfig } from './typeorm.config';
+import { ProductsModule } from './modules/products/products.module';
+import { PcategoryModule } from './modules/pcategory/pcategory.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeORMConfig),
@@ -45,6 +47,8 @@ import { typeORMConfig } from './typeorm.config';
     BlogsModule,
     CommonModule,
     CategoryModule,
+    ProductsModule,
+    PcategoryModule,
   ],
   // providers: [JSONObjectScalar],
   controllers: [AppController],

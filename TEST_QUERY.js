@@ -1,19 +1,44 @@
 query {
-  blog(id:"5504473567091228673") {
-    title
+  blog(id:"5505586410666590209") {
+    title,
+    id,
+    categories
   }
 }
 query {
-  blogs(limit: 15) {
+  blogs(limit: 3, page:1) {
     items {
-      id, title
+      categories,
+      id,title
     },
-    meta {
+    meta{
+      itemCount,
+      itemsPerPage,
+      totalItems,
+      currentPage,
+      totalPages
+    }
+  }
+}
+query {
+  users(limit: 2, page:1) {
+    items {
+      id, username
+    },
+    meta{
       itemCount,
       totalItems,
       itemsPerPage,
       totalPages,
-      currentPage
+      currentPage,
+    }
+  }
+}
+query {
+  category(id:"5505467378953093121") {
+    title,
+    owner {
+      username
     }
   }
 }
@@ -59,4 +84,39 @@ mutation {
   }) {
     title
   }
+}
+mutation {
+  login(password:"vrreborn", username:"vr-reborn") {
+    user {
+      id,
+      username
+    },
+    accessToken,
+    refreshToken
+  }
+}
+mutation {
+	removeCategory(id:"5505476627376635905")
+}
+mutation {
+  updateCategory(input:{
+    title:"Category one ee",
+    id:"5505467378953093121"
+  }) {
+    title,
+    id,
+    owner {
+      username
+    }
+  }
+}
+mutation {
+  updateBlog(input:{
+    id: "5505591353167314945", title:"Blog two update"
+  }) {
+    id, title, content, categories
+  }
+}
+mutation {
+  removeBlog(id:"5505591353167314945")
 }

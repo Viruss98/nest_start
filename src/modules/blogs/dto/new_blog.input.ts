@@ -1,4 +1,4 @@
-import { Validate, MinLength } from 'class-validator';
+import { Validate, MinLength, MaxLength } from 'class-validator';
 import { InputType } from '@nestjs/graphql';
 import { UniqueTitle } from '../validators/UniqueTitle';
 import { Injectable } from '@nestjs/common';
@@ -14,11 +14,13 @@ export class NewBlogInput {
 
   content: string;
 
-  views: number;
+}
 
-  isPublished: boolean;
+@InputType()
+export class UpdateBlogInput {
+  @MinLength(3)
+  @MaxLength(50)
+  title?: string;
 
-  createdAt: Date;
-  updatedAt: Date;
-  categories: string[];
+  id: string;
 }

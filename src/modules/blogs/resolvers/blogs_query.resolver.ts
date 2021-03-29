@@ -4,6 +4,7 @@ import { BlogConnection } from '../entities/blog_connection.entity';
 import { Int, ID } from '@nestjs/graphql';
 import { BlogDataLoader } from '../dataloaders/blog.dataloader';
 import { BlogEntity } from '../entities/blog.entity';
+import { BlogArgs } from '../dto/blog.args';
 
 @Resolver(() => BlogEntity)
 export class BlogsQueryResolver {
@@ -18,7 +19,7 @@ export class BlogsQueryResolver {
   }
 
   @Query(() => BlogConnection, { nullable: true })
-  async blogs(@Args({ name: 'limit', type: () => Int, defaultValue: 15 }) limit: number) {
-    return this.blogService.pagination({ limit: limit, orderDirection: 'DESC' });
+  async blogs(@Args() args: BlogArgs) {
+    return this.blogService.pagination(args);
   }
 }

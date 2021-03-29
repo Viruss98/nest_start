@@ -1,10 +1,11 @@
 import { Resolver, ResolveField, Parent } from '@nestjs/graphql';
 import { BlogEntity } from '../entities/blog.entity';
 import { Category } from 'src/modules/category/entities/category.entity';
+import { CategoryDataLoader } from '../../category/dataloaders/category.dataloader';
 
 @Resolver(() => BlogEntity)
 export class BlogsFieldsResolver {
-  constructor() {
+  constructor(private readonly categoryDataLoader: CategoryDataLoader) {
     //
   }
   @ResolveField()
@@ -14,6 +15,7 @@ export class BlogsFieldsResolver {
 
   @ResolveField(() => [Category])
   categories(@Parent() blog: BlogEntity) {
-    return [];
+    // return [];
+    return blog.categories;
   }
 }

@@ -2,14 +2,15 @@ import { Resolver, Args, Mutation, Query, ResolveField, Parent } from '@nestjs/g
 import { UsersService } from '../services/users.service';
 import { User, UserConnection } from '../entities/users.entity';
 import { NewUserInput } from '../dto/new_user.input';
+import { UserListArgs } from '../dto/user.args';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly userService: UsersService) {}
 
   @Query(() => UserConnection, { name: 'users', nullable: true })
-  users() {
-    return this.userService.pagination();
+  users(@Args() args: UserListArgs) {
+    return this.userService.pagination(args);
   }
 
   @Mutation(() => User)

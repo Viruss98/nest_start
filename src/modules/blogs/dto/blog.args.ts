@@ -5,10 +5,10 @@ import { ArgsType, Field, Int } from '@nestjs/graphql';
 export class BlogArgs {
   @Field(() => Int)
   @Min(0)
-  skip: number;
+  page: number;
 
   @Field(() => Int)
   @Min(1)
   @Max(50)
-  take: number;
+  limit: number;
 }

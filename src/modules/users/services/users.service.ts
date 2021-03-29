@@ -22,9 +22,23 @@ export class UsersService {
     return this.userRepository.findOneOrFail({ where: { username } });
   };
 
-  pagination = () => {
-    return this.userRepository.paginate({ page: 1, limit: 15 });
-  };
+  // pagination = () => {
+  //   return this.userRepository.paginate({ page: 1, limit: 15 });
+  // };
+
+  async pagination({ limit, page }: { limit?: number; page?: number }) {
+    return this.userRepository.paginate(
+      {
+        limit,
+        page,
+      },
+      {
+        order: {
+          id: 'DESC',
+        },
+      },
+    );
+  }
 
   login = async (username: string, password: string) => {
     const user = await this.userRepository.findOneOrFail({

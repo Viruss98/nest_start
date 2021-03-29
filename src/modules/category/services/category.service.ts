@@ -44,4 +44,15 @@ export class CategoryService {
       },
     );
   }
+
+  // Remove category
+  removeCategory = async (id: number | string) => {
+    try {
+      await this.categoryRepository.softDelete(id);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
 }

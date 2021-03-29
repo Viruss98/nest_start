@@ -1,16 +1,17 @@
-import { Entity, Column, BaseEntity, DeepPartial, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany, JoinTable } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Node } from 'src/graphql/types/common.interface.entity';
 import { snowflake } from 'src/helpers/common';
+import {PCategory} from "../../pcategory/entities/pcategory.entity";
 
-@ObjectType('Blog', {
+@ObjectType('Product', {
   implements: [Node],
 })
 @Entity({
-  name: 'blogs',
+  name: 'products',
 })
-export class BlogEntity extends BaseEntity implements Node {
+export class ProductEntity extends BaseEntity implements Node {
   @Field(() => ID)
   @Column('bigint', {
     primary: true,
@@ -40,12 +41,11 @@ export class BlogEntity extends BaseEntity implements Node {
   })
   isPublished: boolean;
 
-  @Column({
-    nullable: true,
-    type: 'text',
-    array: true,
+  @ManyToMany(() => PCategory, category => category.products, {
+    cascade: true
   })
-  categories?: string[];
+  @JoinTable()
+  categories: PCategory[];
 
   @CreateDateColumn({name:'created_at'})
   createdAt: Date;
@@ -57,7 +57,7 @@ export class BlogEntity extends BaseEntity implements Node {
   deletedAt?: Date
 
 
-  constructor(data: DeepPartial<BlogEntity>) {
+  constructor(data: DeepPartial<ProductEntity>) {
     super();
     Object.assign(this, { id: snowflake.nextId(), ...data });
   }
