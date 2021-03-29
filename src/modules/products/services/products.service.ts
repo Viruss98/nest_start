@@ -24,7 +24,6 @@ export class ProductsService {
       },
     });
   }
-
   create = (data: Partial<ProductEntity>): Promise<ProductEntity> => {
     const product = new ProductEntity(data);
     return this.productRepository.save(product);
