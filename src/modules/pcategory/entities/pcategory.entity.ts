@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, Index, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany,RelationId, JoinTable } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, HideField, ID, Field } from '@nestjs/graphql';
 import { Node, PaginationBase } from 'src/graphql/types/common.interface.entity';
@@ -42,8 +42,26 @@ export class PCategory extends BaseEntity implements Node {
   })
   ownerId: string;
 
-  @ManyToMany(type => ProductEntity, product => product.categories)
-  products: ProductEntity[];
+  @RelationId((category: PCategory) => category.products)
+  @Field(() => [ID], {nullable: true, defaultValue: []})
+
+  productIds: string[];
+  // @ManyToMany(() => PCategory, category => category.products, {
+  //   cascade: true
+  // })
+  @ManyToMany(type => ProductEntity)
+  @JoinTable({
+    joinColumn: {
+      name: "categoriesId",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "productsId",
+      referencedColumnName: "id"
+    }
+  })
+  @Field(() => [ProductEntity], {nullable: true, defaultValue: []})
+  products?: ProductEntity[] | null;
 
   @HideField()
   @Column({ type: 'jsonb', nullable: true })

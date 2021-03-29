@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany, JoinTable, RelationId } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Node } from 'src/graphql/types/common.interface.entity';
@@ -41,11 +41,26 @@ export class ProductEntity extends BaseEntity implements Node {
   })
   isPublished: boolean;
 
-  @ManyToMany(() => PCategory, category => category.products, {
-    cascade: true
+  @RelationId((product: ProductEntity) => product.categories)
+  @Field(() => [ID], {nullable: true, defaultValue: []})
+
+  categoriesIds: string[];
+  // @ManyToMany(() => PCategory, category => category.products, {
+  //   cascade: true
+  // })
+  @ManyToMany(() => PCategory)
+  @JoinTable({
+    joinColumn: {
+      name: "productsId",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "categoriesId",
+      referencedColumnName: "id"
+    }
   })
-  @JoinTable()
-  categories: PCategory[];
+  @Field(() => [PCategory], {nullable: true, defaultValue: []})
+  categories: PCategory[] | null;
 
   @CreateDateColumn({name:'created_at'})
   createdAt: Date;

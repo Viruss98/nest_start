@@ -14,6 +14,7 @@ export class NewProductInput {
 
   content: string;
 
+  categoriesIds: string[];
 }
 
 @InputType()
