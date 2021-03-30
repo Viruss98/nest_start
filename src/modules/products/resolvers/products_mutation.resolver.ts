@@ -22,15 +22,15 @@ export class ProductsMutationResolver {
     //
     // return product;
     const product = new ProductEntity();
-    // product.title = input.title;
-    // product.content = input.content;
+    product.title = input.title;
+    product.content = input.content;
     product.productcates = [];
     const productCates = ProductCate.find({where: {id: In(input.listIds)}});
-    console.log('productCates', await productCates);
+    // console.log('productCates', await productCates);
     // for (let i = 0; i < input.listIds.length ; i++) {
     //   const cate = await ProductCate.findOne(input.listIds[i]);
     //   if(cate instanceof ProductCate){
-    //     product.productcates.push(cate);
+    product.productcates = await productCates;
     //   }
     // }
     await product.save();
