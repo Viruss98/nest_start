@@ -14,6 +14,8 @@ export class BlogsService {
 
   // @PromMethodCounter
   async pagination({limit, page }: {limit?: number; page?: number }): Promise<BlogConnection> {
+    // const query = this.blogRepository.createQueryBuilder('blogs').
+
     return this.blogRepository.paginate({
       limit,
       page

@@ -6,6 +6,7 @@ import { CurrentUser, AuthJwt } from 'src/decorators/common.decorator';
 import { User } from '../../users/entities/users.entity';
 import { ID } from '@nestjs/graphql';
 import { ProductCate } from '../../productcate/entities/productcate.entity';
+import { In } from 'typeorm';
 
 @Resolver(() => ProductEntity)
 export class ProductsMutationResolver {
@@ -24,10 +25,14 @@ export class ProductsMutationResolver {
     // product.title = input.title;
     // product.content = input.content;
     product.productcates = [];
-    for (let i = 0; i < input.listIds.length ; i++) {
-      const cate = await ProductCate.findOne(input.listIds[i]);
-      product.productcates.push(cate);
-    }
+    const productCates = ProductCate.find({where: {id: In(input.listIds)}});
+    console.log('productCates', await productCates);
+    // for (let i = 0; i < input.listIds.length ; i++) {
+    //   const cate = await ProductCate.findOne(input.listIds[i]);
+    //   if(cate instanceof ProductCate){
+    //     product.productcates.push(cate);
+    //   }
+    // }
     await product.save();
     return product;
   }
