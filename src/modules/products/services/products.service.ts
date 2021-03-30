@@ -13,7 +13,7 @@ export class ProductsService {
   findOneOrFail = (data: FindOneOptions<ProductEntity>) => this.productRepository.findOneOrFail(data);
 
   // @PromMethodCounter
-  pagination({ limit, page }: { limit?: number; page?: number }): Promise<ProductConnection> {
+  pagination({ title, limit, page }: { title?: string; limit?: number; page?: number }): Promise<ProductConnection> {
     return this.productRepository.paginate({
       limit,
       page,

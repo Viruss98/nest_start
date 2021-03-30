@@ -14,7 +14,8 @@ import { MediaModule } from './modules/media/media.module';
 import { UsersModule } from './modules/users/users.module';
 import { typeORMConfig } from './typeorm.config';
 import { ProductsModule } from './modules/products/products.module';
-import { PcategoryModule } from './modules/pcategory/pcategory.module';
+import { ProductgroupModule } from './modules/productgroup/productgroup.module';
+import { ProductcateModule } from './modules/productcate/productcate.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeORMConfig),
@@ -48,7 +49,8 @@ import { PcategoryModule } from './modules/pcategory/pcategory.module';
     CommonModule,
     CategoryModule,
     ProductsModule,
-    PcategoryModule,
+    ProductgroupModule,
+    ProductcateModule,
   ],
   // providers: [JSONObjectScalar],
   controllers: [AppController],

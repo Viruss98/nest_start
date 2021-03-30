@@ -5,13 +5,13 @@ import { ProductsService } from './services/products.service';
 import { ProductRepository } from './repositories/product.repository';
 import { UniqueTitle } from './validators/UniqueTitle';
 import { ProductDataLoader } from './dataloaders/product.dataloader';
-import { PcategoryModule } from '../pcategory/pcategory.module';
+import { ProductgroupModule } from '../productgroup/productgroup.module';
 import { ProductsQueryResolver } from './resolvers/products_query.resolver';
 import { ProductsMutationResolver } from './resolvers/products_mutation.resolver';
 import { ProductsFieldsResolver } from './resolvers/products_fields.resolver';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductEntity, ProductRepository]), PcategoryModule],
+  imports: [TypeOrmModule.forFeature([ProductEntity, ProductRepository]), ProductgroupModule],
   providers: [
     UniqueTitle,
 

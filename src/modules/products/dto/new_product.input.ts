@@ -2,6 +2,8 @@ import { Validate, MinLength, MaxLength } from 'class-validator';
 import { InputType } from '@nestjs/graphql';
 import { UniqueTitle } from '../validators/UniqueTitle';
 import { Injectable } from '@nestjs/common';
+import { ProductGroup } from "../../productgroup/entities/productgroup.entity";
+import { ProductCate } from "../../productcate/entities/productcate.entity";
 
 @Injectable()
 @InputType()
@@ -14,7 +16,9 @@ export class NewProductInput {
 
   content: string;
 
-  categoriesIds: string[];
+  // productGroupIds: string[];
+  listIds: string[];
+  
 }
 
 @InputType()

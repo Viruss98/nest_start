@@ -22,4 +22,13 @@ export class ProductsQueryResolver {
   async products(@Args() args: ProductArgs) {
     return this.productService.pagination(args);
   }
+
+  // async allProducts(
+  //       @Args() { title, limit, page }: ProductArgs
+  //   ): Promise<ProductConnection[]> {
+  //       if (title) {
+  //           return this.productService.find({ where: { title: Like(`${title}%`), page, limit } })
+  //       }
+  //       return this.productService.find({ page, limit });
+  //   }
 }

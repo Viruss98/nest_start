@@ -13,10 +13,10 @@ export class BlogsService {
   findOneOrFail = (data: FindOneOptions<BlogEntity>) => this.blogRepository.findOneOrFail(data);
 
   // @PromMethodCounter
-  pagination({ limit, page }: { limit?: number; page?: number }): Promise<BlogConnection> {
+  async pagination({limit, page }: {limit?: number; page?: number }): Promise<BlogConnection> {
     return this.blogRepository.paginate({
       limit,
-      page,
+      page
     },
     {
       order: {

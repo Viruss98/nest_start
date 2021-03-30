@@ -3,6 +3,9 @@ import { ArgsType, Field, Int } from '@nestjs/graphql';
 
 @ArgsType()
 export class ProductArgs {
+  @Field({ nullable: true })
+  title?: string;
+
   @Field(() => Int)
   @Min(0)
   page: number;
