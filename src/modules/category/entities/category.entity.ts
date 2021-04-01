@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryColumn, Index, BaseEntity, DeepPartial, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, Index, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany, JoinTable, RelationId  } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, HideField, ID, Field } from '@nestjs/graphql';
 import { Node, PaginationBase } from 'src/graphql/types/common.interface.entity';
 import { snowflake } from 'src/helpers/common';
+import {BlogEntity} from "../../blogs/entities/blog.entity";
 
 interface AccessRole {
   userId: number;
@@ -40,6 +41,9 @@ export class Category extends BaseEntity implements Node {
     name:'owner_id'
   })
   ownerId: string;
+
+  @ManyToMany(type => BlogEntity, blogentity => blogentity.blogcates)
+  blogs: BlogEntity[];
 
   @HideField()
   @Column({ type: 'jsonb', nullable: true })

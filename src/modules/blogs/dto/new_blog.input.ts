@@ -14,6 +14,7 @@ export class NewBlogInput {
 
   content: string;
 
+  listIds: string[];
 }
 
 @InputType()

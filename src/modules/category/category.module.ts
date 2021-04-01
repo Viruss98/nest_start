@@ -10,6 +10,6 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [UsersModule, TypeOrmModule.forFeature([Category, CategoryAccess, CategoryRepository])],
   providers: [CategoryDataLoader, CategoryResolver, CategoryService],
-  exports: [CategoryDataLoader],
+  exports: [CategoryDataLoader, CategoryService, TypeOrmModule.forFeature([Category, CategoryAccess, CategoryRepository])],
 })
 export class CategoryModule {}

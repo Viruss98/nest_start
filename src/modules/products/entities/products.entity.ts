@@ -4,7 +4,7 @@ import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Node } from 'src/graphql/types/common.interface.entity';
 import { snowflake } from 'src/helpers/common';
 // import { ProductGroup } from "../../productgroup/entities/productgroup.entity";
-import { ProductCate } from "../../productcate/entities/productcate.entity";
+import { ProductCate } from '../../productcate/entities/productcate.entity';
 
 @ObjectType('Product', {
   implements: [Node],
@@ -38,7 +38,7 @@ export class ProductEntity extends BaseEntity implements Node {
   @Column({
     default: true,
     comment: 'Set published',
-    name:'is_published'
+    name: 'is_published',
   })
   isPublished: boolean;
 

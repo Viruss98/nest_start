@@ -16,3 +16,25 @@ export class BlogArgs {
   // @Field({ nullable: true })
   // filters?: any[];
 }
+
+@ArgsType()
+export class BlogSearchArgs {
+  @Field(() => Int, {
+    defaultValue: 15,
+  })
+  @Min(1)
+  @Max(100)
+  limit?: number;
+
+  @Field(() => Int, {
+    defaultValue: 1,
+  })
+  @Min(1)
+  page?: number;
+
+  @Field({ nullable: true })
+  slug?: string;
+
+  @Field({ nullable: true })
+  title?: string;
+}

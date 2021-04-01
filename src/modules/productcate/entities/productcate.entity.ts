@@ -30,7 +30,7 @@ export class ProductCate extends BaseEntity implements Node {
 
   @Column({
     default: true,
-    name:'is_published'
+    name: 'is_published',
   })
   isPublished: boolean;
 
@@ -38,7 +38,7 @@ export class ProductCate extends BaseEntity implements Node {
     type: 'bigint',
     nullable: false,
     unsigned: true,
-    name:'owner_id'
+    name: 'owner_id',
   })
   ownerId: string;
 

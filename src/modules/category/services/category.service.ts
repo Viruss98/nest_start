@@ -32,17 +32,20 @@ export class CategoryService {
   }
 
   async paginationCursor({ limit, page }: { limit?: number; page?: number }) {
-    return this.categoryRepository.paginate(
-      {
-        limit,
-        page,
-      },
-      {
-        order: {
-          id: 'DESC',
-        },
-      },
-    );
+    const query = this.categoryRepository.createQueryBuilder('categories');
+    // { order: { id: 'DESC' }
+    return this.categoryRepository.customPaginate(query, { limit, page });
+    // return this.categoryRepository.paginate(
+    //   {
+    //     limit,
+    //     page,
+    //   },
+    //   {
+    //     order: {
+    //       id: 'DESC',
+    //     },
+    //   },
+    // );
   }
 
   // Remove category

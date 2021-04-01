@@ -12,10 +12,4 @@ export class BlogsFieldsResolver {
   title(@Parent() blog: BlogEntity) {
     return blog.title;
   }
-
-  @ResolveField(() => [Category])
-  categories(@Parent() blog: BlogEntity) {
-    // return [];
-    return blog.categories;
-  }
 }

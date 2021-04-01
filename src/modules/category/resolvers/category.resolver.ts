@@ -49,7 +49,7 @@ export class CategoryResolver {
   async updateCategory(@Args('input') input: UpdateCategoryInput, @CurrentUser() currentUser: User) {
     const category = await this.categoryService.findById(input.id);
     console.log(999, category);
-    console.log(currentUser)
+    console.log(currentUser);
     if (category.ownerId !== currentUser.id) throw new ForbiddenException();
 
     return this.categoryService.update(input.id, { ...input, roles: [{ role: 'read', userId: 1 }] });

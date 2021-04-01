@@ -1,8 +1,9 @@
-import { Entity, Column, BaseEntity, DeepPartial, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, BaseEntity, DeepPartial, DeleteDateColumn, ManyToMany, JoinTable, RelationId  } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Node } from 'src/graphql/types/common.interface.entity';
 import { snowflake } from 'src/helpers/common';
+import { Category } from '../../category/entities/category.entity';
 
 @ObjectType('Blog', {
   implements: [Node],
@@ -40,12 +41,12 @@ export class BlogEntity extends BaseEntity implements Node {
   })
   isPublished: boolean;
 
-  @Column({
-    nullable: true,
-    type: 'text',
-    array: true,
+  @ManyToMany(type => Category, category => category.blogs, {
+      cascade: true
   })
-  categories?: string[];
+  @JoinTable()
+  // @Field(() => [ProductCate], {nullable: true, defaultValue: []})
+  blogcates: Category[];
 
   @CreateDateColumn({name:'created_at'})
   createdAt: Date;
@@ -54,10 +55,10 @@ export class BlogEntity extends BaseEntity implements Node {
   updatedAt: Date;
 
   @DeleteDateColumn({name:'deleted_at', nullable:true})
-  deletedAt?: Date
+  deletedAt?: Date;
 
 
-  constructor(data: DeepPartial<BlogEntity>) {
+  constructor(data?: DeepPartial<BlogEntity>) {
     super();
     Object.assign(this, { id: snowflake.nextId(), ...data });
   }
