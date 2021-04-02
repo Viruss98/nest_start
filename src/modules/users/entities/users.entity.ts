@@ -2,16 +2,16 @@ import { Entity, Column, DeepPartial, CreateDateColumn, UpdateDateColumn, Delete
 import { ObjectType, Field, Int, HideField, ID } from '@nestjs/graphql';
 import { Node, PaginationBase } from 'src/graphql/types/common.interface.entity';
 import { snowflake } from 'src/helpers/common';
-
-export enum AppRoles {
-  BASE = 'BASE',
-  ADMIN = 'ADMIN',
-  SUPERADMIN = 'SUPERADMIN',
-  USER = 'USER',
-  USER_CREATE_ANY_VIDEO = 'USER_CREATE_ANY_VIDEO',
-  USER_CREATE_ANY_BLOG = 'USER_CREATE_ANY_BLOG',
-  ADMIN_UPDATE_OWN_VIDEO = 'ADMIN_UPDATE_OWN_VIDEO',
-}
+import { RoleEnum } from 'src/graphql/enums/roles';
+// export enum AppRoles {
+//   BASE = 'BASE',
+//   ADMIN = 'ADMIN',
+//   SUPERADMIN = 'SUPERADMIN',
+//   USER = 'USER',
+//   USER_CREATE_ANY_VIDEO = 'USER_CREATE_ANY_VIDEO',
+//   USER_CREATE_ANY_BLOG = 'USER_CREATE_ANY_BLOG',
+//   ADMIN_UPDATE_OWN_VIDEO = 'ADMIN_UPDATE_OWN_VIDEO',
+// }
 
 @ObjectType({
   implements: [Node],
@@ -27,7 +27,7 @@ export class User implements Node {
   })
   id: string;
 
-  @Column({ length: 50, unique: true, name:'user_name' })
+  @Column({ length: 50, unique: true, name: 'user_name' })
   username: string;
 
   @HideField()
@@ -35,17 +35,17 @@ export class User implements Node {
   password: string;
 
   @HideField()
-  @Column({name:'password_salt'})
+  @Column({ name: 'password_salt' })
   passwordSalt: string;
 
   @Field({
     nullable: true,
-    name:''
+    name: '',
   })
-  @Column({ nullable: true, name:'first_name' })
+  @Column({ nullable: true, name: 'first_name' })
   firstName: string;
 
-  @Column({ nullable: true, name:'last_name' })
+  @Column({ nullable: true, name: 'last_name' })
   lastName?: string;
 
   @Field(() => Int)
@@ -53,26 +53,22 @@ export class User implements Node {
   age?: number;
 
   @Column({
-    default: false, name:'is_active',
+    default: false,
+    name: 'is_active',
   })
   isActive: boolean;
 
-  @Column({
-    nullable: true,
-    type: 'text',
-    enum: AppRoles,
-    array: true,
-  })
-  roles?: string[];
+  @Column({ nullable: true, type: 'enum', array: true, enum: RoleEnum })
+  roles?: RoleEnum[];
 
-  @CreateDateColumn({name:'created_at'})
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({name:'updated_at'})
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({name:'deleted_at', nullable:true})
-  deletedAt?: Date
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   constructor(partial: DeepPartial<User>) {
     Object.assign(this, { id: snowflake.nextId(), ...partial });

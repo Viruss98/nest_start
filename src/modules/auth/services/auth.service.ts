@@ -9,6 +9,10 @@ import jwtDecode from 'jwt-decode';
 import { AuthTokenEntity } from '../entities/auth.entity';
 import { DeepPartial, FindConditions } from 'typeorm';
 import { snowflake } from 'src/helpers/common';
+import { RoleEnum } from 'src/graphql/enums/roles';
+import { ProviderLoginEnum } from 'src/graphql/enums/provider_login';
+import moment from 'moment';
+import { GraphQLContext } from 'src/graphql/app.graphql-context';
 
 type JwtGenerateOption = {
   audience?: string | string[];
@@ -41,18 +45,69 @@ export class AuthService {
     }
   };
 
-  login = async (username: string, password: string) => {
+  login = async (username: string, password: string, provider: string, ctx: GraphQLContext) => {
     const user = await this.validateUser(username, password);
     if (!user) {
       throw new ApolloError('Error');
     }
+    // if (!user) {
+    //   throw new ApolloError(commonMessage.login_fail, 'login_fail', {
+    //     title: commonTitle.login_fail,
+    //   });
+    // }
+
+    // if (!user.isActive) {
+    //   throw new ApolloError(commonMessage.account_deactive, 'account_deactive', {
+    //     title: commonTitle.account_deactive,
+    //   });
+    // }
+
+    // if (provider !== ProviderLoginEnum.WEB_ADMIN) {
+    //   if (user.roles.includes(RoleEnum.SUPER_ADMIN) || user.roles.includes(RoleEnum.ADMIN)) {
+    //     throw new ApolloError('You cannot login in Mobile App or Web App');
+    //   }
+    // } else {
+    //   if (
+    //     (user.roles.includes(RoleEnum.BUYER) && !user.roles.includes(RoleEnum.PARTNER)) ||
+    //     (user.roles.includes(RoleEnum.PARTNER) && !user.isActivePartner)
+    //   ) {
+    //     throw new ApolloError('You cannot login in Admin web');
+    //   }
+    // }
+    let audience;
+    if(user.roles) {
+      if (user.roles.includes(RoleEnum.SUPER_ADMIN)) {
+        audience = RoleEnum.SUPER_ADMIN;
+      } else if (user.roles.includes(RoleEnum.ADMIN)) {
+        audience = RoleEnum.ADMIN;
+      } else if (user.roles.includes(RoleEnum.PARTNER)) {
+        audience = RoleEnum.PARTNER;
+      } else {
+        audience = 'user';
+      }
+    }
     try {
       const authToken = await this.saveAuthToken(user.id, user.username, {
         issuer: 'thedv',
-        audience: ['app'],
+        audience: [audience],
       });
       if (!authToken) {
         throw new ApolloError('Error');
+      }
+      if (provider === ProviderLoginEnum.WEB_ADMIN) {
+        // Set accessToken
+        ctx.res.cookie('token', authToken.accessToken, {
+          expires: moment(jwtDecode<JWTDecodeValue>(authToken.accessToken).exp * 1000).toDate(),
+          sameSite: false,
+          httpOnly: true,
+        });
+
+        // Set refreshToken
+        ctx.res.cookie('refreshToken', authToken.refreshToken, {
+          expires: moment(jwtDecode<JWTDecodeValue>(authToken.refreshToken).exp * 1000).toDate(),
+          sameSite: false,
+          httpOnly: true,
+        });
       }
       return {
         user,
@@ -149,5 +204,13 @@ export class AuthService {
       await this.authRepository.update(data.id, data);
       return await this.authRepository.findOne(data.id);
     }
+  };
+
+  logoutUser = async (user: User) => {
+    const authToken = await this.authRepository.find({ userId: user.id });
+    if (authToken) {
+      await this.authRepository.remove(authToken);
+    }
+    return true;
   };
 }

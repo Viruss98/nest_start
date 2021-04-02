@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FindOneOptions,  } from 'typeorm';
+import { FindOneOptions  } from 'typeorm';
 import { BlogRepository } from '../repositories/blog.repository';
 import { BlogEntity } from '../entities/blog.entity';
 import { BlogConnection } from '../entities/blog_connection.entity';
@@ -39,7 +39,7 @@ export class BlogsService {
     if(category) {
       const query = this.blogRepository.createQueryBuilder('blogs').innerJoinAndSelect("blogs.blogcates", "categories")
       .andWhere(`categories.id = :slug`, {slug})
-      .where("blogs.title ILIKE :title", {title: '%' + title + '%' })
+      .where("blogs.title ILIKE :title", {title: `%${ title }%` })
       .andWhere(`blogs.views Between ${1} AND ${2}`)
       // .andWhere(`blogs.views >= 1`)
       // .andWhere(`blogs.views < 2`)

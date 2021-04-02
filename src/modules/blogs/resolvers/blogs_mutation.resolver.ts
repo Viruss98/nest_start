@@ -32,14 +32,19 @@ export class BlogsMutationResolver {
 
   // update blog
   @Mutation(() => BlogEntity)
-  @AuthJwt() // auth to update
+  // @AuthJwt() // auth to update
   async updateBlog(@Args('input') input: UpdateBlogInput, @CurrentUser() currentUser: User) {
     const blog = await this.blogService.findById(input.id);
     console.log(999, blog);
-    console.log(currentUser);
+    // console.log(currentUser);
     // if (category.ownerId !== currentUser.id) throw new ForbiddenException();
-
-    return this.blogService.update(input.id, { ...input });
+    blog.title = 'blog one';
+  //   question.categories = question.categories.filter(category => {
+  //     category.id !== categoryToRemove.id
+  // })
+    await blog.save();
+    return blog;
+    // return this.blogService.update(input.id, { ...input });
   }
 
   // Remove blog

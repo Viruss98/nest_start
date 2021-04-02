@@ -1,7 +1,15 @@
 import { createParamDecorator, applyDecorators, UseGuards, ExecutionContext } from '@nestjs/common';
 // import { GraphQLContext } from 'src/graphql/app.graphql-context';
 import { GraphQLResolveInfo } from 'graphql';
-import { GqlAuthGuard, GqlCookieAuthGuard } from 'src/guards/gql-auth.guard';
+import {
+  GqlAuthGuard,
+  GqlCookieAuthGuard,
+  GqlAuthSubGuard,
+  GqlAppAuthGuard,
+  GqlAdminAuthGuard,
+  GqlAppNoRequireAuthGuard,
+  GqlSupperAdminAuthGuard,
+} from 'src/guards/gql-auth.guard';
 import { Request, Response } from 'express';
 import { User } from 'src/modules/users/entities/users.entity';
 import { CookieAuthGuard } from 'src/guards/rest-auth.guard';
@@ -15,7 +23,7 @@ type GraphQLExecutionContext = [any, any, GraphqlContext, GraphQLResolveInfo];
 
 export const AcceptLang = createParamDecorator<unknown, ExecutionContext, string | Promise<string>>((_data, host) => {
   const [, , ctx] = host.getArgs<GraphQLExecutionContext>();
-  return ctx?.req?.acceptsLanguages(['en', 'vi']) || 'en';
+  return ctx?.req?.acceptsLanguages(['en', 'kr']) || 'en';
 });
 
 export const GraphQLInfo = createParamDecorator<any, ExecutionContext, GraphQLResolveInfo>((_data, host) => {
@@ -39,6 +47,26 @@ export const CurrentUserRest = createParamDecorator<keyof User, ExecutionContext
 
 export const AuthJwt = () => {
   return applyDecorators(UseGuards(GqlAuthGuard));
+};
+
+export const AppAuth = () => {
+  return applyDecorators(UseGuards(GqlAppAuthGuard));
+};
+
+export const AppSubAuth = () => {
+  return applyDecorators(UseGuards(GqlAuthSubGuard));
+};
+
+export const AppNoRequireAuth = () => {
+  return applyDecorators(UseGuards(GqlAppNoRequireAuthGuard));
+};
+
+export const AdminAuth = () => {
+  return applyDecorators(UseGuards(GqlAdminAuthGuard));
+};
+
+export const SupperAdminAuth = () => {
+  return applyDecorators(UseGuards(GqlSupperAdminAuthGuard));
 };
 
 export const AuthCookie = () => {

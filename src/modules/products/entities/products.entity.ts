@@ -87,3 +87,9 @@ export class ProductEntity extends BaseEntity implements Node {
     Object.assign(this, { id: snowflake.nextId(), ...data });
   }
 }
+
+@ObjectType()
+export class ProductInfoChat {
+  @Field(() => ID)
+  id: string;
+}

@@ -18,3 +18,14 @@ export class NewUserInput {
 
   roles?: string[];
 }
+
+@InputType()
+export class UpdatePassInput {
+  @MinLength(3)
+  @MaxLength(50)
+  newpassword: string;
+
+  username: string;
+
+  temppass: string;
+}

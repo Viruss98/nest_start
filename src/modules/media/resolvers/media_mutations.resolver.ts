@@ -2,7 +2,9 @@ import { Inject } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { createWriteStream, Stats, statSync, unlink } from 'fs';
 import { extname, join } from 'path';
-import { FileUpload, GraphQLUpload } from 'graphql-upload';
+// import { GraphQLUpload } from 'graphql-upload';
+import { GraphQLUpload } from 'apollo-server';
+import type { FileUpload } from 'graphql-upload';
 import { nanoid } from 'nanoid';
 import { CurrentUser, AuthJwt } from 'src/decorators/common.decorator';
 import { User } from '../../users/entities/users.entity';
@@ -88,53 +90,57 @@ export class MediaMutationsResolver {
     );
   }
 
-  @Mutation(() => MediaEntity)
-  @AuthJwt()
+  @Mutation(() => Boolean)
+  // @AuthJwt()
   async uploadMediaToS3(
     @Args({ type: () => GraphQLUpload, name: 'file' }) file: FileUpload,
     @Args({ type: () => ID, name: 'parentId', nullable: true }) parentId: string,
-    @CurrentUser() currentUser: User,
-  ): Promise<MediaEntity> {
-    const readStream = file.createReadStream();
-    const id = nanoid();
-    const fileExt = extname(file.filename);
-    const originalPath = join(this.options.uploadDir, `${id}${fileExt}`);
-    const options: ManagedUpload.ManagedUploadOptions = {
-      partSize: 5 * 1024 * 1024,
-      queueSize: 10,
-    };
-    const res = await s3
-      .upload(
-        {
-          Bucket: process.env.AWS_S3_BUCKET_NAME ?? '',
-          Body: readStream,
-          Key: originalPath,
-          ACL: 'public-read',
-        },
-        options,
-      )
-      .promise();
+    // @CurrentUser() currentUser: User,
+  ): Promise<any> {
+    console.log(file);
+    // return true;
+    // const readStream = file.createReadStream();
+    // console.log(readStream);
+    return true;
+    // const id = nanoid();
+    // const fileExt = extname(file.filename);
+    // const originalPath = join(this.options.uploadDir, `${id}${fileExt}`);
+    // const options: ManagedUpload.ManagedUploadOptions = {
+    //   partSize: 5 * 1024 * 1024,
+    //   queueSize: 10,
+    // };
+    // const res = await s3
+    //   .upload(
+    //     {
+    //       Bucket: process.env.AWS_S3_BUCKET_NAME ?? '',
+    //       Body: readStream,
+    //       Key: originalPath,
+    //       ACL: 'public-read',
+    //     },
+    //     options,
+    //   )
+    //   .promise();
 
-    return await this.mediaService.addMedia(
-      {
-        name: res.Key,
-        mimeType: file.mimetype,
-        filePath: res.Location,
-        type: FileTypeEnum.FILE,
-        ownerId: currentUser.id,
-      },
-      parentId,
-    );
+    // return await this.mediaService.addMedia(
+    //   {
+    //     name: res.Key,
+    //     mimeType: file.mimetype,
+    //     filePath: res.Location,
+    //     type: FileTypeEnum.FILE,
+    //     ownerId: currentUser.id,
+    //   },
+    //   parentId,
+    // );
   }
 
   @Mutation(() => Boolean)
-  @AuthJwt()
+  // @AuthJwt()
   async removeMedia(@Args({ type: () => ID, name: 'id', nullable: true }) id: string): Promise<boolean> {
     return await this.mediaService.removeMedia(id);
   }
 
   @Mutation(() => MediaEntity)
-  @AuthJwt()
+  // @AuthJwt()
   async updateMedia(
     @Args({ type: () => UpdateMediaInput, name: 'input', nullable: false }) input: UpdateMediaInput,
   ): Promise<MediaEntity> {
@@ -142,7 +148,7 @@ export class MediaMutationsResolver {
   }
 
   @Mutation(() => MediaEntity)
-  @AuthJwt()
+  // @AuthJwt()
   async createDir(@Args() data: CreateDirArgs, @CurrentUser() currentUser: User): Promise<MediaEntity> {
     return await this.mediaService.addMedia(
       {

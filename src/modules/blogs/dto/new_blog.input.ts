@@ -24,4 +24,6 @@ export class UpdateBlogInput {
   title?: string;
 
   id: string;
+
+  listIds: string[];
 }
