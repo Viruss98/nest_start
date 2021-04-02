@@ -4,7 +4,7 @@ import { UsersService } from 'src/modules/users/services/users.service';
 import { Message, MessageMediaDetail, MessageRedis } from '../entities/message.entity';
 import { MessageService } from '../services/message.service';
 import { MessageTypeEnum } from 'src/graphql/enums/message_type';
-import { MediaEntity } from 'src/modules/media/entities/media.entity';
+// import { MediaEntity } from 'src/modules/media/entities/media.entity';
 import { ProductEntity, ProductInfoChat } from 'src/modules/products/entities/products.entity';
 import { ProductsService } from 'src/modules/productS/services/products.service';
 import { CurrentUser } from 'src/decorators/common.decorator';
@@ -39,15 +39,15 @@ export class MessagesFieldsResolver {
     return this.messageService.getMessageParent(message.parentId);
   }
 
-  @ResolveField(() => MediaEntity, {
-    nullable: true,
-    defaultValue: {},
-  })
-  async media(@Parent() message: Message) {
-    if (message.messageType === MessageTypeEnum.IMAGE) {
-      return this.messageService.getMediaMessage(message.mediaId);
-    }
-  }
+  // @ResolveField(() => MediaEntity, {
+  //   nullable: true,
+  //   defaultValue: {},
+  // })
+  // async media(@Parent() message: Message) {
+  //   if (message.messageType === MessageTypeEnum.IMAGE) {
+  //     return this.messageService.getMediaMessage(message.mediaId);
+  //   }
+  // }
 
   @ResolveField(() => ProductInfoChat, {
     nullable: true,
@@ -100,15 +100,15 @@ export class MessagesRedisFieldsResolver {
     return this.messageService.getMessageParent(message.parentId);
   }
 
-  @ResolveField(() => MediaEntity, {
-    nullable: true,
-    defaultValue: {},
-  })
-  async media(@Parent() message: Message) {
-    if (message.messageType === MessageTypeEnum.IMAGE) {
-      return this.messageService.getMediaMessage(message.mediaId);
-    }
-  }
+  // @ResolveField(() => MediaEntity, {
+  //   nullable: true,
+  //   defaultValue: {},
+  // })
+  // async media(@Parent() message: Message) {
+  //   if (message.messageType === MessageTypeEnum.IMAGE) {
+  //     return this.messageService.getMediaMessage(message.mediaId);
+  //   }
+  // }
 
   @ResolveField(() => ProductInfoChat, {
     nullable: true,

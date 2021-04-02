@@ -1,5 +1,6 @@
 import { MinLength, MaxLength } from 'class-validator';
 import { Field, Int, InputType } from '@nestjs/graphql';
+import { RoleEnum } from 'src/graphql/enums/roles';
 
 @InputType()
 export class NewUserInput {
@@ -16,7 +17,7 @@ export class NewUserInput {
   @Field(() => Int)
   age?: number;
 
-  roles?: string[];
+  roles?: RoleEnum[];
 }
 
 @InputType()

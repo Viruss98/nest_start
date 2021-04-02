@@ -11,7 +11,7 @@ import { MessageRepository } from '../repositories/message.repository';
 import { getConnection } from 'typeorm';
 import { ApolloError } from 'apollo-server';
 import { RoomService } from './room.service';
-import { MediaService } from 'src/modules/media/services/media.service';
+// import { MediaService } from 'src/modules/media/services/media.service';
 import { MessageNotice } from '../entities/message_notice.entity';
 import { ADMIN_ID_CHAT } from 'src/helpers/constants';
 import { MessageTypeEnum } from 'src/graphql/enums/message_type';
@@ -25,7 +25,7 @@ export class MessageService {
         private readonly messageRepository: MessageRepository,
         private readonly messageNoticesRepository: MessageNoticesRepository,
         private readonly roomService: RoomService,
-        private readonly mediaService: MediaService,
+        // private readonly mediaService: MediaService,
         // private readonly notificationService: NotificationService,
     ) {}
 
@@ -208,7 +208,8 @@ export class MessageService {
         // const checkBlocks = blocks.find((block) => block.userId === userId);
         // return !!checkBlocks;
     }
-    async getUserHasBeenBlock(userId: string): Promise<[]> {
+    async getUserHasBeenBlock(userId: string) {
+      // : Promise<[]
         // const users = await this.messageBlocksRepository.find({
         //     where: {
         //         blockId: userId,
@@ -218,7 +219,8 @@ export class MessageService {
         // return users;
     }
 
-    async getUserBlocked(userId: string): Promise<[]> {
+    async getUserBlocked(userId: string) {
+      // :Promise<any[]
         // const users = await this.messageBlocksRepository.find({
         //     where: {
         //         userId: userId,
@@ -229,17 +231,17 @@ export class MessageService {
     }
 
     async updateSeenByRoomAndUser(roomId: string, userId: string) {
-        const result = await getConnection()
-            .createQueryBuilder()
-            .update(MessageSeen)
-            .set({ isSeen: true, seenAt: new Date() })
-            .where('"room_id" = :roomId and "user_id" = :userId', {
-                roomId,
-                userId,
-            })
-            .execute();
+        // const result = await getConnection()
+        //     .createQueryBuilder()
+        //     .update(MessageSeen)
+        //     .set({ isSeen: true, seenAt: new Date() })
+        //     .where('"room_id" = :roomId and "user_id" = :userId', {
+        //         roomId,
+        //         userId,
+        //     })
+        //     .execute();
 
-        return !!result;
+        // return !!result;
     }
 
     async getMediaMessage(mediaId: string) {
@@ -255,6 +257,7 @@ export class MessageService {
         //     .orderBy('message.id', 'ASC');
         // return await queryBuilder.getOne();
 
-        return this.mediaService.findById(mediaId);
+        // return this.mediaService.findById(mediaId);
+        return true;
     }
 }

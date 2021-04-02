@@ -15,7 +15,7 @@ import { RoomsFieldsResolver, RoomRedisFieldsResolver } from './resolvers/room_f
 import { MessagesFieldsResolver, MessagesRedisFieldsResolver } from './resolvers/message_fields.resolver';
 // import { MessageSeenRepository } from './repositories/message_seen.repository';
 import { RoomDataLoader } from './dataloaders/room.dataloader';
-import { MediaModule } from '../media/media.module';
+// import { MediaModule } from '../media/media.module';
 // import { MessageBlocksRepository } from './repositories/message_block.repository';
 // import { MessageSettingsRepository } from './repositories/message_setting.repository';
 import { ProductsModule } from '../products/products.module';
@@ -27,7 +27,7 @@ import { NotificationModule } from 'src/modules/notification/notification.module
 @Module({
   imports: [
     UsersModule,
-    MediaModule,
+    // MediaModule,
     ProductsModule,
     TypeOrmModule.forFeature([RoomRepository, RoomMemberRepository, MessageRepository, MessageNoticesRepository]),
     NotificationModule,

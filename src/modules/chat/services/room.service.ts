@@ -7,14 +7,13 @@ import { RoomDataLoader } from '../dataloaders/room.dataloader';
 import { CheckRoomInput, CreateRoomInput, AdminCreateRoomInput, AdminAddMemberInput } from '../dto/create_room.input';
 import { GetRoomInput } from '../dto/room';
 import { RoomMember } from '../entities/room_member.entity';
-import { MessageBlocksRepository } from '../repositories/message_block.repository';
 import { RoomRepository } from '../repositories/room.repository';
 import { Room } from './../entities/room.entity';
 import { RoomMemberRepository } from './../repositories/room_member.repository';
 import { ADMIN_ID_CHAT } from 'src/helpers/constants';
 import { User } from 'src/modules/users/entities/users.entity';
 import { RoleEnum } from 'src/graphql/enums/roles';
-import { NotificationService } from 'src/modules/notification/services/notification.service';
+// import { NotificationService } from 'src/modules/notification/services/notification.service';
 import { NofificationTypeEnum } from 'src/graphql/enums/notification';
 
 @Injectable()
@@ -23,9 +22,8 @@ export class RoomService {
         private readonly roomRepository: RoomRepository,
         private readonly usersService: UsersService,
         private readonly roomMemberRepository: RoomMemberRepository,
-        private readonly messageBlocksRepository: MessageBlocksRepository,
         private readonly roomDataLoader: RoomDataLoader,
-        private readonly notificationService: NotificationService,
+        // private readonly notificationService: NotificationService,
     ) {}
     async createRoom(input: CreateRoomInput, userId: string) {
         const { roomType, userIds, roomName, image } = input;
@@ -193,13 +191,13 @@ export class RoomService {
 
             const newRoomCrate = this.roomRepository.create(newRoom);
             await this.createRoomMember(queryRunner, newRoomCrate.id, userId, userIds);
-            await this.notificationService.create({
-                navigationItemId: newRoomCrate.id,
-                type: NofificationTypeEnum.NEW_CHAT_INVITED,
-                buyerId: userId,
-                sellerId: userId,
-                messageRoomName: newRoomCrate.roomName,
-            });
+            // await this.notificationService.create({
+            //     navigationItemId: newRoomCrate.id,
+            //     type: NofificationTypeEnum.NEW_CHAT_INVITED,
+            //     buyerId: userId,
+            //     sellerId: userId,
+            //     messageRoomName: newRoomCrate.roomName,
+            // });
             await queryRunner.manager.save(newRoomCrate);
             await queryRunner.commitTransaction();
             return newRoomCrate;
@@ -283,18 +281,20 @@ export class RoomService {
         });
         let isMember = false;
         let userMember: RoomMember | null = null;
-        if (user.roles.includes(RoleEnum.ADMIN) || user.roles.includes(RoleEnum.SUPER_ADMIN)) {
-            isMember = true;
-        } else if (roomInfo?.roomType === RoomTypeEnum.PUBLISH) {
-            isMember = true;
-        } else {
-            for (const member of roomMembers) {
-                if (member.userId === user.id) {
-                    isMember = true;
-                    userMember = member;
-                    break;
-                }
-            }
+        if(user.roles) {
+          if (user.roles.includes(RoleEnum.ADMIN) || user.roles.includes(RoleEnum.SUPER_ADMIN)) {
+              isMember = true;
+          } else if (roomInfo?.roomType === RoomTypeEnum.PUBLISH) {
+              isMember = true;
+          } else {
+              for (const member of roomMembers) {
+                  if (member.userId === user.id) {
+                      isMember = true;
+                      userMember = member;
+                      break;
+                  }
+              }
+          }
         }
 
         if (!isMember && needThrow) {
@@ -327,7 +327,7 @@ export class RoomService {
             queryBuilder = queryBuilder.andWhere(`(LOWER("room_name") LIKE '%${keyword.trim().toLowerCase()}%')`);
         }
 
-        return this.roomRepository.parsePaginate(queryBuilder, { limit, page });
+        return this.roomRepository.customPaginate(queryBuilder, { limit, page });
     }
 
     async adminRooms(input: GetRoomInput, userId: string) {
@@ -349,7 +349,7 @@ export class RoomService {
             queryBuilder = queryBuilder.andWhere(`(LOWER("room_name") LIKE '%${keyword.trim().toLowerCase()}%')`);
         }
 
-        return this.roomRepository.parsePaginate(queryBuilder, { limit, page });
+        return this.roomRepository.customPaginate(queryBuilder, { limit, page });
     }
     async updateAtRoom(roomId: string) {
         await this.roomRepository.update(roomId, { lastUpdated: new Date() });
