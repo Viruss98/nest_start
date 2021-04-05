@@ -10,7 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BlogsModule } from './modules/blogs/blogs.module';
 import { CategoryModule } from './modules/category/category.module';
 import { CommonModule } from './modules/common/common.module';
-// import { MediaModule } from './modules/media/media.module';
+import { MediaModule } from './modules/media/media.module';
 import { UsersModule } from './modules/users/users.module';
 import { typeORMConfig } from './typeorm.config';
 import { ProductsModule } from './modules/products/products.module';
@@ -30,10 +30,10 @@ import { NotificationModule } from './modules/notification/notification.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeORMConfig),
-    // MediaModule.forRoot({
-    //   uploadDir: 'uploads',
-    //   quality: 70,
-    // }),
+    MediaModule.forRoot({
+      uploadDir: 'uploads',
+      quality: 70,
+    }),
     GraphQLModule.forRootAsync({
       imports: [UsersModule],
       useFactory: async (usersService: UsersService) => ({
@@ -56,7 +56,8 @@ import { NotificationModule } from './modules/notification/notification.module';
           keepAlive: 30000,
           onConnect: async (connectionParams: any, context: any) => {
             const headers = connectionParams?.headers;
-            const authToken: string = headers?.authorization && headers?.authorization.split(' ')[1];
+            // const authToken: string = headers?.authorization && headers?.authorization.split(' ')[1];
+            const authToken: string = connectionParams?.Authorization && connectionParams?.Authorization.split('Bearer ')[1];
             if (authToken && authToken !== 'null') {
               const token: JWTDecodeValue = jwtDecode(authToken);
               const userInfo = await usersService.findById(token.sub);

@@ -5,7 +5,7 @@ import { User } from './modules/users/entities/users.entity';
 import { ProductGroup, ProductGroupAccess } from './modules/productgroup/entities/productgroup.entity';
 import { Category, CategoryAccess } from './modules/category/entities/category.entity';
 import { AuthTokenEntity } from './modules/auth/entities/auth.entity';
-// import { MediaEntity } from './modules/media/entities/media.entity';
+import { MediaEntity } from './modules/media/entities/media.entity';
 import { ProductCate, ProductCateAccess } from './modules/productcate/entities/productcate.entity';
 import { Room } from './modules/chat/entities/room.entity';
 import { RoomMember } from './modules/chat/entities/room_member.entity';
@@ -25,7 +25,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
     User,
     Category,
     CategoryAccess,
-    // MediaEntity,
+    MediaEntity,
     AuthTokenEntity,
     ProductGroup,
     ProductGroupAccess,

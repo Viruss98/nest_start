@@ -58,7 +58,7 @@ export class AuthResolver {
 
   @Mutation(() => AuthConnection)
   async login(@Args('input') input: AppLoginInput, @Context() ctx: GraphQLContext) {
-    const data = await this.authService.login(input.username, input.password, input.provider, ctx);
+    const data = await this.authService.login(input.username, input.password, input.provider ? input.provider : "WEB", ctx);
 
     ctx.res.cookie('token', data.accessToken, {
       expires: moment(jwtDecode<JWTDecodeValue>(data.accessToken).exp * 1000).toDate(),

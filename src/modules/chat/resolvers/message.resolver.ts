@@ -42,7 +42,7 @@ export class MessageResolver {
     private readonly messageService: MessageService,
     private readonly roomService: RoomService,
     @Inject('PUB_SUB') private pubSub: PubSubEngine,
-  ) {}
+  ) { }
 
   @Mutation(() => Room, { nullable: true, defaultValue: false })
   @AdminAuth()
@@ -239,6 +239,7 @@ export class MessageResolver {
         senderId: user?.id,
       });
       this.joinUserPrivateRoom(input.roomId, user?.id);
+      console.log(message);
       return message;
     });
   }
@@ -322,7 +323,7 @@ export class MessageResolver {
     return typeingConnection;
   }
 
-  @AppSubAuth()
+  // @AppSubAuth()
   @Subscription((returns) => MessageRedis, {
     filter: (payload, variables, context) => {
       if (payload.newMessage.type === 'notice') {
@@ -337,7 +338,7 @@ export class MessageResolver {
   newMessage(@Args('roomId') roomId: string) {
     return this.pubSub.asyncIterator(NEW_MESSAGE);
   }
-  @AppSubAuth()
+  // @AppSubAuth()
   @Subscription((returns) => TypingConnection, {
     filter: (payload, variables, context) => {
       const user = getUserFromContextConnection(context);
@@ -364,7 +365,7 @@ export class MessageResolver {
   updateTypingList() {
     return this.pubSub.asyncIterator(UPDATE_TYPEPING_LIST);
   }
-  @AppSubAuth()
+  // @AppSubAuth()
   @Subscription((returns) => RoomRedis, {
     filter: (payload: PayloadUpdateRoomList, variables, context) => {
       const user = getUserFromContextConnection(context);
@@ -397,7 +398,7 @@ export class MessageResolver {
     return this.pubSub.asyncIterator(UPDATE_ROOM_LIST);
   }
 
-  @AppSubAuth()
+  // @AppSubAuth()
   @Subscription((returns) => RoomRedis, {
     filter: (payload, variables, context) => {
       const user = getUserFromContextConnection(context);
@@ -412,7 +413,7 @@ export class MessageResolver {
     return this.pubSub.asyncIterator(UPDATE_ROOM);
   }
 
-  @AppSubAuth()
+  // @AppSubAuth()
   @Subscription((returns) => RoomRedis, {
     filter: (payload, variables, context) => {
       const user = getUserFromContextConnection(context);
@@ -427,7 +428,7 @@ export class MessageResolver {
     return this.pubSub.asyncIterator(LEAVE_ROOM);
   }
 
-  @AppSubAuth()
+  // @AppSubAuth()
   @Subscription((returns) => RoomRedis, {
     filter: (payload, variables, context) => {
       const user = getUserFromContextConnection(context);

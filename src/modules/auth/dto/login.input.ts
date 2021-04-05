@@ -7,5 +7,5 @@ export class AppLoginInput {
 
   password: string;
 
-  provider: ProviderLoginEnum;
+  provider?: ProviderLoginEnum;
 }

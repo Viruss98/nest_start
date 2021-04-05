@@ -10,7 +10,6 @@ import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import { UserInputError } from 'apollo-server';
 import { json } from 'body-parser';
-
 const PORT = parseInt(process.env.PORT ?? '3000', 10);
 
 // const numCPUs = cpus().length;
