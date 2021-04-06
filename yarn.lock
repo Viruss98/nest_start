@@ -1931,7 +1931,7 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
-any-promise@^1.0.0:
+any-promise@^1.0.0, any-promise@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
   integrity sha1-q8av7tzqUugJzcA3au0845Y10X8=
@@ -2344,6 +2344,13 @@ axios@0.19.2:
   dependencies:
     follow-redirects "1.5.10"
 
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
+  dependencies:
+    follow-redirects "^1.10.0"
+
 babel-jest@^26.0.1:
   version "26.0.1"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-26.0.1.tgz#450139ce4b6c17174b136425bda91885c397bc46"
@@ -2403,7 +2410,7 @@ babel-preset-jest@^26.0.0:
     babel-plugin-jest-hoist "^26.0.0"
     babel-preset-current-node-syntax "^0.1.2"
 
-babel-runtime@^6.26.0:
+babel-runtime@^6.23.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -3458,6 +3465,11 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
+core-decorators@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/core-decorators/-/core-decorators-0.17.0.tgz#3f43180a86d2ab0cc51069f46a1ec3e49e7cebd6"
+  integrity sha1-P0MYCobSqwzFEGn0ah7D5J5869Y=
+
 core-js@^2.4.0:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
@@ -3693,7 +3705,7 @@ dayjs@^1.8.16:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.28.tgz#37aa6201df483d089645cb6c8f6cef6f0c4dbc07"
   integrity sha512-ccnYgKC0/hPSGXxj7Ju6AV/BP4HUkXC2u15mikXT5mX9YorEaoi1bEKOmAqdkJHN4EEkmAf97SpH66Try5Mbeg==
 
-debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
+debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.3:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
@@ -4713,6 +4725,17 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
+fb@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fb/-/fb-2.0.0.tgz#91fd40325da34ec41c68b25530fc3a3e0dacfa6a"
+  integrity sha1-kf1AMl2jTsQcaLJVMPw6Pg2s+mo=
+  dependencies:
+    any-promise "^1.3.0"
+    babel-runtime "^6.23.0"
+    core-decorators "^0.17.0"
+    debug "^2.6.3"
+    request "^2.81.0"
+
 feature-policy@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/feature-policy/-/feature-policy-0.3.0.tgz#7430e8e54a40da01156ca30aaec1a381ce536069"
@@ -4841,6 +4864,11 @@ follow-redirects@1.5.10:
   integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
   dependencies:
     debug "=3.1.0"
+
+follow-redirects@^1.10.0:
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
+  integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -9201,7 +9229,7 @@ request-promise-native@^1.0.8:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@^2.88.2:
+request@^2.81.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==

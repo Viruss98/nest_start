@@ -13,7 +13,11 @@ import { RoleEnum } from 'src/graphql/enums/roles';
 import { ProviderLoginEnum } from 'src/graphql/enums/provider_login';
 import moment from 'moment';
 import { GraphQLContext } from 'src/graphql/app.graphql-context';
-
+import { LoginSNSInput } from '../dto/login.input';
+import axios from 'axios';
+import FB, { FacebookApiException } from 'fb';
+FB.options({ version: 'v10.0' });
+const fooApp = FB.extend({ appId: process.env.FB_APP_ID, appSecret: process.env.FB_APP_SC });
 type JwtGenerateOption = {
   audience?: string | string[];
   issuer?: string;
@@ -44,6 +48,31 @@ export class AuthService {
       throw new Error('User not found');
     }
   };
+
+  loginWithSNS = async (input: LoginSNSInput) => {
+    try {
+      let response;
+      if (input.snsToken && input.snsType === 'GOOGLE') {
+        response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+          params: {
+            access_token: input.snsToken,
+          },
+        });
+        // const data = response.data; // sub:id, email, name, picture
+        console.log(response.data);
+      }
+      if (input.snsToken && input.snsType === 'FACEBOOK') {
+        fooApp.api('me', { fields: 'id,name,email,picture.type(large)', access_token: input.snsToken }, function (res) {
+          console.log(res);
+          // id,name,email,picture.data.url
+        });
+      }
+    } catch (error) {
+      throw new ApolloError('access_token is unauthorized', 'access_token is unauthorized', {
+        title: 'Access_token is unauthorized',
+      });
+    }
+  }
 
   login = async (username: string, password: string, provider: string, ctx: GraphQLContext) => {
     const user = await this.validateUser(username, password);

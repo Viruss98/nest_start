@@ -9,3 +9,9 @@ export class AppLoginInput {
 
   provider?: ProviderLoginEnum;
 }
+
+@InputType()
+export class LoginSNSInput {
+  snsToken: string;
+  snsType: string;
+}

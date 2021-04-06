@@ -10,9 +10,9 @@ import jwtDecode from 'jwt-decode';
 import moment from 'moment';
 import type { JWTDecodeValue } from '../auth.interface';
 import { GraphQLContext } from 'src/graphql/app.graphql-context';
-import { AppLoginInput } from '../dto/login.input';
+import { AppLoginInput, LoginSNSInput } from '../dto/login.input';
 
-@Resolver()
+@Resolver(() => AuthConnection)
 export class AuthResolver {
   constructor(private readonly authService: AuthService, private readonly userService: UsersService) {}
 
@@ -44,6 +44,11 @@ export class AuthResolver {
   @AppAuth()
   async logoutUser(@CurrentUser() currentUser: User) {
     return this.authService.logoutUser(currentUser);
+  }
+
+  @Mutation(() => AuthConnection)
+  async loginWithSNS(@Args('input') input: LoginSNSInput) {
+    return this.authService.loginWithSNS(input);
   }
 
   // @Mutation(() => Boolean)
